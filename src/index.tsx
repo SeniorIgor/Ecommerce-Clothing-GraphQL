@@ -13,51 +13,35 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ApolloProvider } from 'react-apollo';
-import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient, gql } from 'apollo-boost';
+import { ApolloProvider } from '@apollo/client';
 
 import { App } from './app';
-
 import { AuthProvider } from './views/hooks/use-auth';
-
 import { store, persistor } from './store';
-
+import { apolloClient } from './apollo-client';
 import './assets/styles/index.sass';
 
-const httpLink = createHttpLink({
-  uri: 'https://crwn-clothing.com',
-});
-
-const cache = new InMemoryCache();
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache,
-});
-
-client
-  .query({
-    query: gql`
-      {
-        getCollectionsByTitle(title: "hats") {
-          id
-          title
-          items {
-            id
-            name
-          }
-        }
-      }
-    `,
-  })
-  .then((res) => console.log(res))
-  .catch((err) => console.log('Error', err));
+// client
+//   .query({
+//     query: gql`
+//       {
+//         getCollectionsByTitle(title: "hats") {
+//           id
+//           title
+//           items {
+//             id
+//             name
+//           }
+//         }
+//       }
+//     `,
+//   })
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log('Error', err));
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <ReduxProvider store={store}>
         <AuthProvider>
           <BrowserRouter>
