@@ -1,28 +1,19 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  gql,
-} from '@apollo/client';
+import { ApolloClient, createHttpLink } from '@apollo/client';
+
+import { cache } from './graphql/cache';
 
 const link = createHttpLink({
   uri: 'https://crwn-clothing.com',
 });
 
-const cache = new InMemoryCache();
+// const typeDefs = gql`
+//   extend type Query {
+//     cartHidden: Boolean!
+//   }
+// `;
 
 export const apolloClient = new ApolloClient({
   link,
   cache,
-});
-
-apolloClient.writeQuery({
-  query: gql`
-    query GetCartHidden {
-      cartHidden
-    }
-  `,
-  data: {
-    cartHidden: true,
-  },
+  connectToDevTools: true,
 });

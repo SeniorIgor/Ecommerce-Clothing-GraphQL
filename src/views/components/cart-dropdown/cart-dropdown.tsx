@@ -1,11 +1,10 @@
-import { FC, useMemo, memo } from 'react';
+import { FC, useMemo, memo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import { CartItem } from '../cart-item';
-
-import { useActions, useTypedSelector } from '../../hooks';
-import { selectors } from '../../../store';
+import { toggleCartHidden } from '../../../graphql/mutations';
+import { useGetCartItems } from '../../../graphql/queries';
 
 import {
   Container,
@@ -19,31 +18,30 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 
 type HandleClick = React.MouseEventHandler<HTMLButtonElement>;
 
-const { selectCartItems } = selectors.cart;
-
 const scrollBarProps = {
   wheelPropagation: false,
 };
 
 export const CartDropdown: FC = memo(() => {
-  const items = useTypedSelector(selectCartItems);
-  const { toggleCartHidden } = useActions();
+  const { data } = useGetCartItems();
 
   const history = useHistory();
 
-  const handleClick: HandleClick = () => {
+  const handleClick: HandleClick = useCallback(() => {
     history.push('/checkout');
     toggleCartHidden();
-  };
+  }, [history]);
 
   const itemsView = useMemo(() => {
-    return items.map((item) => <CartItem item={item} key={item.id} />);
-  }, [items]);
+    return data?.cartItems.map((item) => (
+      <CartItem item={item} key={item.id} />
+    ));
+  }, [data]);
 
   return (
     <Container>
       <CartItemsContainer>
-        {items.length ? (
+        {data?.cartItems.length ? (
           <PerfectScrollbar options={scrollBarProps}>
             <CartItems>{itemsView}</CartItems>
           </PerfectScrollbar>

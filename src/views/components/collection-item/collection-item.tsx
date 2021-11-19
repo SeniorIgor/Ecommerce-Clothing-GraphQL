@@ -1,8 +1,7 @@
 import { FC, memo } from 'react';
 
-import { useActions } from '../../hooks';
-
 import { CollectionItemProps } from './collection-item.types';
+import { addCartItem } from '../../../graphql/mutations';
 
 import {
   Container,
@@ -15,7 +14,6 @@ import {
 
 export const CollectionItem: FC<CollectionItemProps> = memo(
   ({ item, className }) => {
-    const { addCartItem } = useActions();
     const { name, price, imageUrl } = item;
 
     return (

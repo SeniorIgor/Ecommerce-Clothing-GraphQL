@@ -20,5 +20,7 @@ export const GET_COLLECTION_LIST = gql`
   }
 `;
 
-export const useGetCollectionList = () =>
+const useGetCollectionList = () =>
   useQuery<CollectionListResponse>(GET_COLLECTION_LIST);
+
+export default useGetCollectionList;

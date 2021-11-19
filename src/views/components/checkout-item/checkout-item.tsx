@@ -1,8 +1,11 @@
 import { FC } from 'react';
 
-import { useActions } from '../../hooks';
-
 import { CheckoutItemProps } from './checkout-item.types';
+import {
+  addCartItem,
+  removeCartItem,
+  clearCartItem,
+} from '../../../graphql/mutations';
 
 import {
   Container,
@@ -15,7 +18,6 @@ import {
 
 export const CheckoutItem: FC<CheckoutItemProps> = ({ item }) => {
   const { name, price, quantity, imageUrl } = item;
-  const { addCartItem, removeCartItem, clearCartItem } = useActions();
 
   return (
     <Container>

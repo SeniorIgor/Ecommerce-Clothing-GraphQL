@@ -2,11 +2,10 @@ import { FC, memo } from 'react';
 
 import { selectors } from '../../../store';
 import { useTypedSelector, useAuth } from '../../hooks';
-
 import { CartIcon } from '../cart-icon';
 import { CartDropdown } from '../cart-dropdown';
-
 import { ReactComponent as Logo } from '../../../assets/images/crown.svg';
+import { useGetCartHidden } from '../../../graphql/queries';
 
 import {
   Container,
@@ -15,11 +14,10 @@ import {
   OptionsContainer,
 } from './header.styles';
 
-const { selectCartHidden } = selectors.cart;
 const { selectUser } = selectors.user;
 
 export const Header: FC = memo(() => {
-  const hidden = useTypedSelector(selectCartHidden);
+  const { data } = useGetCartHidden();
   const user = useTypedSelector(selectUser);
   const { logout } = useAuth();
 
@@ -41,7 +39,7 @@ export const Header: FC = memo(() => {
         )}
         <CartIcon />
       </OptionsContainer>
-      {!hidden && <CartDropdown />}
+      {data && !data.cartHidden && <CartDropdown />}
     </Container>
   );
 });

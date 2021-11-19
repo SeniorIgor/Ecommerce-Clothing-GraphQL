@@ -2,11 +2,8 @@ import { FC, memo } from 'react';
 
 import { CheckoutItem } from '../../components/checkout-item';
 import { StripeButton } from '../../components/stripe-button';
-
-import { useTypedSelector } from '../../hooks/use-typed-selector';
-import { selectors } from '../../../store';
-
-import { data } from './checkout.data';
+import { useGetCartItems, useGetCartTotal } from '../../../graphql/queries';
+import { headerColumns } from './checkout.data';
 
 import {
   Container,
@@ -16,17 +13,15 @@ import {
   Message,
 } from './checkout.styles';
 
-const { selectCartItems, selectCartTotal } = selectors.cart;
-
 export const Checkout: FC = memo(() => {
-  const items = useTypedSelector(selectCartItems);
-  const total = useTypedSelector(selectCartTotal);
+  const { data } = useGetCartItems();
+  const total = useGetCartTotal();
 
-  const itemsView = items.map((item) => (
+  const itemsView = data?.cartItems.map((item) => (
     <CheckoutItem item={item} key={item.id} />
   ));
 
-  const headerView = data.map(({ id, title }) => (
+  const headerView = headerColumns.map(({ id, title }) => (
     <HeaderColumn key={id}>
       <span>{title}</span>
     </HeaderColumn>

@@ -1,20 +1,19 @@
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 
-import { useActions, useTypedSelector } from '../../hooks';
-import { selectors } from '../../../store';
+import { toggleCartHidden } from '../../../graphql/mutations';
+import { useGetCartQuantity } from '../../../graphql/queries';
 
 import { Container, Icon, ItemCount } from './cart-icon.styles';
 
-const { selectCountItems } = selectors.cart;
-
 export const CartIcon: FC = memo(() => {
-  const count = useTypedSelector(selectCountItems);
-  const { toggleCartHidden } = useActions();
+  const quantity = useGetCartQuantity();
+
+  const handleClick = useCallback(() => toggleCartHidden(), []);
 
   return (
-    <Container onClick={toggleCartHidden}>
+    <Container onClick={handleClick}>
       <Icon />
-      <ItemCount>{count}</ItemCount>
+      <ItemCount>{quantity}</ItemCount>
     </Container>
   );
 });

@@ -1,4 +1,4 @@
-export const data = [
+export const headerColumns = [
   {
     id: '01',
     title: 'Product',

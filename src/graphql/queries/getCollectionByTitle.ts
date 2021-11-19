@@ -24,10 +24,10 @@ export const GET_COLLECTION_BY_TITLE = gql`
   }
 `;
 
-export const useGetCollectionByTitle = (
-  variables: CollectionByTitleVariables
-) =>
+const useGetCollectionByTitle = (variables: CollectionByTitleVariables) =>
   useQuery<CollectionByTitleResponse, CollectionByTitleVariables>(
     GET_COLLECTION_BY_TITLE,
     { variables }
   );
+
+export default useGetCollectionByTitle;
